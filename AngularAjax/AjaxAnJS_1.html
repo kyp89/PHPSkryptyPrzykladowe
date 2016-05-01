@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html>
+<html ng-app="exampleApp">
+<head>
+    <meta charset="UTF-8">
+    <title>Projekt z HTML</title>
+    <link href="const/myStyle.css" rel="stylesheet" />
+    <link href="const/bootstrap-theme.css" rel="stylesheet" />
+    <link href="const/bootstrap.css" rel="stylesheet" />
+    <script src="const/angular.js"></script>
+    <script>
+        angular.module("exampleApp", [])
+        .controller("defaultCtrl", function ($scope, $http) {
+
+        $scope.numbers=0;
+        $scope.obiekt = {nazwa:'to jest nazwa',ilosc:10};  
+        $scope.tablica = ['element 1', 'element 2', 'element 3'];
+            $scope.loadData = function () {
+                
+                $http.post("test.php",{data:$scope.obiekt}).success(function(data){
+                   $scope.dane = data; 
+                });
+                
+                /*$http.get("test.php?id="+$scope.tablica).success(function(data){
+                   $scope.dane = data; 
+                });*/
+            }
+              
+  
+        });
+    </script>
+</head>
+<body ng-controller="defaultCtrl">
+    <div class="panel panel-default">
+        <div class="panel-body">
+
+            {{dane}}
+        </div>
+        <input class="input-sm" type="number" ng-model="numbers" max="9" min="0">
+        <button class="btn btn-primary" ng-click="loadData()">Klikaj</button>
+    </div>
+</body>
+</html>

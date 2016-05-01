@@ -1,0 +1,242 @@
+﻿<!DOCTYPE html>
+<html ng-app="exampleApp">
+<head>
+    <meta charset="UTF-8">
+    <title>Projekt z HTML</title>
+    <link href="const/myStyle.css" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <link href="const/bootstrap-theme.css" rel="stylesheet" />
+    <link href="const/bootstrap.css" rel="stylesheet" />
+    <script src="const/angular.js"></script>
+    <script>
+        $(document).ready(function(){
+            $(window).load(function(){
+              /* $('.menuMale').hide(); 
+               $('.menuMale ul').hide();*/
+                //$('.malePrzyciski').hide();
+               zmianaSzerokosci();
+            });
+            
+            $(window).resize(function(){
+               
+               
+               zmianaSzerokosci();
+               
+               
+            });
+            
+            function zmianaSzerokosci()
+            {
+                var szerokoscOkna = $(window).width();
+                if(szerokoscOkna<800)
+                {
+                   $('.GrupaPrzyciskow ul').hide();
+                   $('.menuMale button').width(szerokoscOkna-200);
+                   $('.menuMale').show();
+                   $('.malePrzyciski').hide();
+                   
+                }  else{
+                   
+                   $('.GrupaPrzyciskow ul').show();                  
+                   $('.menuMale').hide();
+               }
+                
+            }
+            
+            $('.menuMale').click(function(){
+                console.log('kliknieto');
+                $('.malePrzyciski').slideToggle();
+            });
+            
+            
+        });
+        
+        
+       angular.module("exampleApp", [])
+        .controller("defaultCtrl", function ($scope, $http) {
+                
+                $scope.message='';
+                $scope.wiadomosc = {email:'',temat:'',tresc:''};
+                
+            $scope.loadData = function () {
+                console.log('kliknięto');
+              /*  if($scope.wiadomosc.email=='')
+                {
+                  $scope.message+='Uzupełnij email! ';
+                }
+                if($scope.wiadomosc.temat=='')
+                {
+                    $scope.message+='Uzupełnij temat! ';
+                }
+                if($scope.wiadomosc.tresc=='')
+                {
+                    $scope.message+='Uzupełnij tresc! ';
+                }
+                if((!$scope.wiadomosc.tresc=='')&&(!$scope.wiadomosc.temat=='') && (!$scope.message=='') )
+                {*/
+                    console.log('wysłano');
+                    $http.post("test.php",{data:$scope.wiadomosc}).success(function(data){
+                   $scope.message =angular.fromJson(data); 
+                   console.log($scope.message);
+                });
+               // }
+                /*$http.post("test.php",{data:$scope.obiekt}).success(function(data){
+                   $scope.dane = data; 
+                });**/
+              
+                };
+              
+  
+        });
+    </script>
+    <style>
+        form .ng-invalid.g-dirty{background-color: #CD0707;}
+        header{
+            background-color: #10A3A3;          
+            border-bottom: solid 5px #000;
+            padding: 10px;
+            border-radius: 5px;;
+        }
+        
+        footer{
+            background-color: #10A3A3;          
+            border-bottom: solid 5px #000;
+            padding: 10px;
+            border-radius: 5px;;
+            
+        }
+        
+        header h3{
+           font-weight: bold; 
+        }
+        section{
+            
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #000;
+            border-radius: 5px;
+        }
+        
+        .przycisk{
+            display: inline-block;
+            width:100px;
+            height: 50px;
+            background-color: #CD0707;
+            border-radius: 5px;
+            margin: 0px;
+            border: 5px solid #5c5c3d;
+            padding: 10px;           
+        }
+        
+        .przycisk:hover{
+            background-color: #B58105;
+            font-weight: bold;
+        }
+/*                
+        .przycisk2{
+            display: block;
+            width:100px;
+            height: 50px;
+            background-color: #CD0707;
+            border-radius: 5px;
+            margin: 0px;
+            border: 5px solid #5c5c3d;
+            padding: 10px;           
+        }*/
+        
+        .przycisk2:hover{
+            background-color: #B58105;
+            font-weight: bold;
+        }
+        .GrupaPrzyciskow{
+            
+            position: absolute;
+            right: 10px;
+            top: 25px;           
+        }
+        
+        .menuMale{
+            
+           
+             width:100px;
+         
+        }
+        .menuMale .malePrzyciski{
+           
+            height: 200px;
+            position: relative;
+        }
+        
+    </style>
+</head>
+<body ng-controller="defaultCtrl">
+    <div class="container">
+
+        <header class="col-xs-12">
+            
+            <h3 >Przykładowy formularz</h3>
+            <br/>
+            <small>Lorem ipsum dolor sit amet, consectetur adipisicing elit. </small>
+          
+            <nav class="GrupaPrzyciskow">
+                <div class="btn-group">
+              <ul>
+                  <li class="btn przycisk">Przycisk 1</li>
+                  <li class="btn przycisk">Przycisk 2</li>
+                  <li class="btn przycisk">Przycisk 3</li>
+                  <li class="btn przycisk">Przycisk 4</li>
+              </ul>
+                </div>
+             </nav>
+                  
+              <div class="row col-xs-12 menuMale">
+                  <button class="btn przycisk" id="przyciskMaly">Menu</button>
+                  <div class="malePrzyciski">                 
+                      <button class="btn przycisk">Przycisk 1</button>
+                      <button class="btn przycisk">Przycisk 2</button>
+                      <button class="btn przycisk">Przycisk 3</button>
+                      <button class="btn przycisk">Przycisk 4</button>
+                  </div>
+              </div>
+                
+            
+        </header>
+        <section  class="col-xs-12 col-sm-6">
+        <form class="form-group-sm">
+            
+            <!--Email      -->
+            <label  for="email">Podaj Email: </label>
+            <input class="form-control" type="email" name="email" id="email" ng-model="wiadomosc.email" required/>
+            <br/>
+             <!--Temat      -->
+            <label for="topic">Podaj temat :</label>
+            <input class="form-control" type="text" name="topic" id="topic" ng-model="wiadomosc.temat" required/>
+            <br/>
+            <!--Tresc      -->
+            <label for="wiadomosc">Treść wiadomości:</label>
+            <br/>
+            <textarea  class="form-control" name="wiadomosc" id="wiadomosc" cols="30" rows="20" ng-model="wiadomosc.tresc" required></textarea>
+            <br>
+
+            <button class="btn-primary" ng-click="loadData()">Wyslij</button>
+            <div>
+                <br/>
+                {{message.Imie}}
+                <br/>
+                {{message.email}}
+                <br/>
+                {{message.Tresc}}   
+                
+            </div>
+        </form>
+       
+    </section>
+        <section class="col-xs-12 col-sm-6">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab blanditiis error, ipsam. Adipisci, incidunt dicta, consectetur sit illum doloremque, dolorum esse dolore nostrum labore iusto rem dolores iste pariatur hic. Quibusdam neque nisi molestias autem sunt alias mollitia earum ad.
+        </section>
+        <footer class="col-xs-12">
+            <small>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab blanditiis error, ipsam. Adipisci, incidunt dicta, consectetur sit illum doloremque, dolorum esse dolore nostrum labore iusto rem dolores iste pariatur hic. Quibusdam neque nisi molestias autem sunt alias mollitia earum ad.</small>
+        </footer>
+    </div>
+</body>
+</html>
